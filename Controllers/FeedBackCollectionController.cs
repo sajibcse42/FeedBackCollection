@@ -20,7 +20,7 @@ namespace FeedBackCollection.Controllers
        
        [HttpPost]
        [Route("GetFeedBackCollection")]
-        public async Task<ActionResult> GetFeedBackCollection(int postid)
+        public async Task<ActionResult> GetFeedBackCollection()
         {
             //can not fininsh need to work
             var model = await _feedBackCollectionService.GetAll();

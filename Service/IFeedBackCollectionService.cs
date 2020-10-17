@@ -24,17 +24,22 @@ namespace FeedBackCollection.Service
         public async Task<object> GetAll()
         {
             var datamodel = (from c in _context.CommentsInfo
-                             join p in _context.CommentsInfo on c.PostId equals p.Id
+                             join p in _context.PostInfo on c.PostId equals p.Id
+                             join u in _context.UserInfo on p.UserRole equals u.Role
                              select new
                              {
                                  c.Likes,
                                  c.Dislike,
                                  c.PostId,
+                                 Like = _context.CommentsInfo.Where(s => s.Likes == true && s.PostId==c.PostId).Count(),
+                                 Dislikes = _context.CommentsInfo.Where(t => t.Dislike == true && t.PostId == c.PostId).Count(),
+                                 p.Post,
+                                 p.UserRole,
                                  p.CreatedAt,
                                  c.CommentUser,
 
-                             }).ToList();
-            //can not fininsh by time need to work
+                             }).GroupBy(p => p.PostId).ToList();
+           
             return datamodel;
 
         }
